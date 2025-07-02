@@ -5,7 +5,22 @@ class Auth_ViewModel extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   String? messageError;
+  bool hidePassword = true;
+  bool hideConfirmPassword = true;
+  bool isLogin = true;
+  bool isLoading = false;
+  bool isChecked = false;
+  bool isCheckedTerms = false;
+  bool isCheckedPrivacy = false;
+  bool isCheckedMarketing = false;
+   bool _rememberMe = false;
 
+  bool get rememberMe => _rememberMe;
+
+  void toggleRememberMe() {
+    _rememberMe = !_rememberMe;
+    notifyListeners();
+  }
   String? validateEmail(String? value) {
     String emailPattern =
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

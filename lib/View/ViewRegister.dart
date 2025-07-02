@@ -1,5 +1,4 @@
 import 'package:design_pattern_login/ViewModel/AuthViewModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    final VM_Login = Provider.of<Auth_ViewModel>(context, listen: false);
+    final vmLogin = Provider.of<Auth_ViewModel>(context, listen: false);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20),
@@ -38,24 +37,24 @@ class _RegisterState extends State<Register> {
                 children: [
                   SizedBox(height: 30),
                   buildTextField(
-                    controller: VM_Login.emailController,
+                    controller: vmLogin.emailController,
                     label: "Email",
                     pass: false,
-                    validator: VM_Login.validateEmail,
+                    validator: vmLogin.validateEmail,
                   ),
                   SizedBox(height: 10),
                   buildTextField(
-                    controller: VM_Login.passwordController,
+                    controller: vmLogin.passwordController,
                     label: "Password",
                     pass: true,
-                    validator: VM_Login.validatePassword,
+                    validator: vmLogin.validatePassword,
                   ),
                   SizedBox(height: 10),
                   buildTextField(
-                    controller: VM_Login.confirmPasswordController,
+                    controller: vmLogin.confirmPasswordController,
                     label: "Confirm Password",
                     pass: true,
-                    validator: VM_Login.validateConfirmPassword,
+                    validator: vmLogin.validateConfirmPassword,
                   ),
                 ],
               ),
@@ -86,7 +85,7 @@ class _RegisterState extends State<Register> {
                   return;
                 }
                 else{
-                  print('Lỗi hành vi của người dùng : ${VM_Login.messageError}');
+                  print('Lỗi hành vi của người dùng : ${vmLogin.messageError}');
                   return;
                 }
               },

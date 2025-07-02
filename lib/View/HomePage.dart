@@ -56,13 +56,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearchBar() {
-    final VM_HomePage = Provider.of<HomePageViewModel>(context, listen: false);
+    final vmHomepage = Provider.of<HomePageViewModel>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: TextField(
-            controller: VM_HomePage.searchCountry,
+            controller: vmHomepage.searchCountry,
             style: TextStyle(fontSize: 13),
             // onChanged: (value) => ShowAllData(),
             decoration: InputDecoration(
