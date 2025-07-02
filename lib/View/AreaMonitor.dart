@@ -1,4 +1,11 @@
+<<<<<<< HEAD
+=======
+import 'package:design_pattern_login/ViewModel/AreaMonitorViewModel.dart';
+>>>>>>> origin/master
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 
 class AreaMontitor extends StatefulWidget {
   const AreaMontitor({super.key});
@@ -8,14 +15,116 @@ class AreaMontitor extends StatefulWidget {
 }
 
 class _AreaMontitorState extends State<AreaMontitor> {
+
+  Map<String, dynamic> dataCountry = {};
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Terrorism"),
-        automaticallyImplyLeading: false,
-      ),
+    bool isLoading = false;
+    final vmMonitor = Provider.of<AreaMontitorViewModel>(
+      context,
+      listen: false,
+    );
+
+    return ModalProgressHUD(inAsyncCall: isLoading,
+        progressIndicator: LoadingAnimationWidget.inkDrop(
+            color: Colors.green, size: 50), child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text("Terrorism"),
+            automaticallyImplyLeading: false,
+          ),
+          body: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                _buildForm(controller: vmMonitor.nameCountries, dataType: 0),
+                SizedBox(height: 20),
+                _buildForm(controller: vmMonitor.latitude, dataType: 1),
+                SizedBox(height: 20),
+                _buildForm(controller: vmMonitor.longitude, dataType: 2),
+                SizedBox(height: 20),
+                ElevatedButton(onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  bool isSuccess = await vmMonitor.InsertAreaMonitor();
+                  if(isSuccess){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Thêm dữ liệu thành công'),
+                        duration: Duration(seconds: 3),
+                        action: SnackBarAction(
+                          label: 'Đóng',
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          },
+                        ),
+                      ),
+                    );
+                    return;
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Lỗi khi thêm dữ liệu ${vmMonitor.errorMessage}'),
+                        duration: Duration(seconds: 3),
+                        action: SnackBarAction(
+                          label: 'Đóng',
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          },
+                        ),
+                      ),
+                    );
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                  return;
+                }, child: Text("Insert")),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget _buildForm(
+      {required TextEditingController controller, required int dataType}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            controller: controller,
+            style: TextStyle(fontSize: 13),
+            // onChanged: (value) => ShowAllData(),
+            decoration: InputDecoration(
+              hintText:
+              dataType == 0
+                  ? "Tên đất nước bị tấn công"
+                  : dataType == 1
+                  ? "Latitude"
+                  : "Longitude",
+              hintStyle: TextStyle(fontSize: 13),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 18,
+                horizontal: 12,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
